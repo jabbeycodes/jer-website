@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
 type Booking = {
   id: string;
   name: string;
@@ -32,7 +29,6 @@ const statusColors: Record<string, string> = {
 export default function AdminBookings() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBookings();
@@ -60,7 +56,6 @@ export default function AdminBookings() {
       setBookings((prev) =>
         prev.map((b) => (b.id === id ? { ...b, status, updated_at: new Date().toISOString() } : b))
       );
-      setSelected(null);
     } catch (err) {
       console.error("Failed to update booking:", err);
     }
@@ -68,8 +63,6 @@ export default function AdminBookings() {
 
   const pending = bookings.filter((b) => b.status === "pending");
   const confirmed = bookings.filter((b) => b.status === "confirmed");
-  const declined = bookings.filter((b) => b.status === "declined");
-  const completed = bookings.filter((b) => b.status === "completed");
 
   return (
     <>
@@ -144,7 +137,7 @@ export default function AdminBookings() {
                     </div>
 
                     {booking.message && (
-                      <p className="text-gray-400 text-sm mt-3 pl-0 border-l-2 border-[#C9A96E]/30 pl-4">
+                      <p className="text-gray-400 text-sm mt-3 border-l-2 border-[#C9A96E]/30 pl-4">
                         {booking.message}
                       </p>
                     )}
