@@ -1,14 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image placeholder */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: "url('/hero-mansion.jpg')",
-        }}
+      {/* Background image */}
+      <Image
+        src="/hero-mansion.jpg"
+        alt="Jirapa Executive Residence - luxury mansion"
+        fill
+        className="object-cover"
+        priority
+        quality={90}
       />
       <div className="hero-overlay absolute inset-0" />
 
