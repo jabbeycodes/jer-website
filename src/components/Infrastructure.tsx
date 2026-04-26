@@ -31,7 +31,7 @@ export default function Infrastructure() {
   ];
 
   return (
-    <section className="section-padding bg-[#0A0A0A] border-y border-[#1F1F1F]">
+    <section className="section-padding bg-[#111111] border-y border-[#1F1F1F]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Built for Operations</p>

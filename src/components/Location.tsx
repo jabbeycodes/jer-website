@@ -1,6 +1,6 @@
 export default function Location() {
   return (
-    <section className="section-padding bg-[#0A0A0A] border-t border-[#1F1F1F]">
+    <section className="section-padding bg-[#111111] border-t border-[#1F1F1F]">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Map */}

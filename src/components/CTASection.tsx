@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CTASection() {
   return (
-    <section className="section-padding bg-[#0A0A0A]">
+    <section className="section-padding bg-[#111111]">
       <div className="max-w-4xl mx-auto text-center">
         <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Book Your Stay</p>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
@@ -16,7 +16,7 @@ export default function CTASection() {
             Request Availability
           </Link>
           <a
-            href="https://wa.me/233XXXXXXXXX"
+            href="https://wa.me/14438501407"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline text-base px-8 py-4"

@@ -7,7 +7,7 @@ export default function Experience() {
   ];
 
   return (
-    <section id="experience" className="section-padding bg-[#0A0A0A]">
+    <section id="experience" className="section-padding bg-[#111111]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">The Property</p>

@@ -65,7 +65,7 @@ export default function ContactPage() {
                       required
                       value={form.name}
                       onChange={handleChange}
-                      className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                      className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                       placeholder="Your name"
                     />
                   </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
                       required
                       value={form.email}
                       onChange={handleChange}
-                      className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                      className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                       placeholder="you@organization.com"
                     />
                   </div>
@@ -90,7 +90,7 @@ export default function ContactPage() {
                     name="organization"
                     value={form.organization}
                     onChange={handleChange}
-                    className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                    className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                     placeholder="NGO, government agency, company..."
                   />
                 </div>
@@ -104,7 +104,7 @@ export default function ContactPage() {
                       required
                       value={form.checkIn}
                       onChange={handleChange}
-                      className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                      className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                       required
                       value={form.checkOut}
                       onChange={handleChange}
-                      className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                      className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -124,7 +124,7 @@ export default function ContactPage() {
                       name="guests"
                       value={form.guests}
                       onChange={handleChange}
-                      className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                      className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                     >
                       {[1, 2, 3, 4, 5, 6].map((n) => (
                         <option key={n} value={n}>{n} {n === 1 ? "guest" : "guests"}</option>
@@ -139,7 +139,7 @@ export default function ContactPage() {
                     name="purpose"
                     value={form.purpose}
                     onChange={handleChange}
-                    className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
+                    className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                   >
                     <option value="">Select...</option>
                     <option value="ngo">NGO / Development Work</option>
@@ -158,7 +158,7 @@ export default function ContactPage() {
                     rows={4}
                     value={form.message}
                     onChange={handleChange}
-                    className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors resize-none"
+                    className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors resize-none"
                     placeholder="Any special requirements, questions, or details about your stay..."
                   />
                 </div>

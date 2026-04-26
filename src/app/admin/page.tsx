@@ -56,7 +56,7 @@ export default function AdminPage() {
     return (
       <>
         <Navbar />
-        <main className="pt-20 min-h-screen flex items-center justify-center bg-[#0A0A0A]">
+        <main className="pt-20 min-h-screen flex items-center justify-center bg-[#111111]">
           <form onSubmit={handleLogin} className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 w-full max-w-sm">
             <h2 className="text-2xl font-bold mb-2 text-center" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
               JER Admin
@@ -66,7 +66,7 @@ export default function AdminPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#0A0A0A] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors mb-4"
+              className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors mb-4"
               placeholder="Admin password"
               autoFocus
             />
@@ -84,7 +84,7 @@ export default function AdminPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-20 min-h-screen bg-[#0A0A0A]">
+      <main className="pt-20 min-h-screen bg-[#111111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8">
             <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-1">Admin Dashboard</p>
