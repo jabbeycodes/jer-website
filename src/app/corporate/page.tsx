@@ -8,7 +8,7 @@ export default function CorporatePage() {
       <main className="pt-20">
         {/* Hero */}
         <section className="relative h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1531498860502-7c67cf95f565?w=1400&q=80')" }} />
+          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/exterior-day.jpg')" }} />
           <div className="hero-overlay absolute inset-0" />
           <div className="relative z-10 text-center px-4">
             <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Corporate</p>
@@ -65,3 +65,4 @@ export default function CorporatePage() {
     </>
   );
 }
+

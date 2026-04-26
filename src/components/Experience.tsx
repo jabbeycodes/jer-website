@@ -22,7 +22,7 @@ export default function Experience() {
             <div
               className="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-50 transition-opacity"
               style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80')",
+                backgroundImage: "url('/interior-living.jpg')",
               }}
             />
             <div className="relative z-10 flex flex-col items-center gap-3">
@@ -65,3 +65,4 @@ export default function Experience() {
     </section>
   );
 }
+

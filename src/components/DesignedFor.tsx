@@ -2,22 +2,22 @@ const audiences = [
   {
     title: "NGO & Development Teams",
     description: "Secure base for field operations, donor visits, and regional coordination.",
-    image: "https://images.unsplash.com/photo-1531498860502-7c67cf95f565?w=600&q=80",
+    image: "/exterior-day.jpg",
   },
   {
     title: "Government Visits",
     description: "Private and professional setting for official delegations and ministerial stays.",
-    image: "https://images.unsplash.com/photo-1554469384-e58fac16e25a?w=600&q=80",
+    image: "/hero-mansion.jpg",
   },
   {
     title: "Diaspora Executives",
     description: "A home-quality residence for professionals visiting from abroad who expect privacy and reliability.",
-    image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&q=80",
+    image: "/interior-living.jpg",
   },
   {
     title: "Private Retreats",
     description: "Exclusive compound for personal retreats, family visits, and quiet time away from the city.",
-    image: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=80",
+    image: "/outdoor-area.jpg",
   },
 ];
 

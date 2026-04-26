@@ -2,12 +2,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const images = [
-  { src: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&q=80", alt: "Elegant living room" },
-  { src: "https://images.unsplash.com/photo-1613490493576-7fde63ad5080?w=600&q=80", alt: "Residence exterior at dusk" },
-  { src: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=80", alt: "Pool and outdoor area" },
-  { src: "https://images.unsplash.com/photo-1531498860502-7c67cf95f565?w=600&q=80", alt: "Building exterior" },
-  { src: "https://images.unsplash.com/photo-1554469384-e58fac16e25a?w=600&q=80", alt: "Modern residence" },
-  { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80", alt: "Interior design" },
+  { src: "/interior-living.jpg", alt: "Elegant living room" },
+  { src: "/hero-mansion.jpg", alt: "Residence exterior at dusk" },
+  { src: "/outdoor-area.jpg", alt: "Pool and outdoor area" },
+  { src: "/exterior-day.jpg", alt: "Building exterior" },
+  { src: "/workspace.jpg", alt: "Modern residence" },
+  { src: "/bedroom.jpg", alt: "Interior design" },
 ];
 
 export default function GalleryPage() {
@@ -56,3 +56,4 @@ export default function GalleryPage() {
     </>
   );
 }
+
