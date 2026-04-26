@@ -163,8 +163,8 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <button type="submit" className="btn-gold w-full justify-center text-base py-4">
-                  Submit Inquiry
+                <button type="submit" disabled={submitting} className="btn-gold w-full justify-center text-base py-4">
+                  {submitting ? "Submitting..." : "Submit Inquiry"}
                 </button>
               </form>
             )}

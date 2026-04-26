@@ -34,7 +34,7 @@ export default function Footer() {
               <a href="mailto:stay@jiraparesidence.com" className="text-gray-400 hover:text-[#C9A96E] text-sm transition-colors">
                 stay@jiraparesidence.com
               </a>
-              <a href="https://wa.me/233XXXXXXXXX" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#C9A96E] text-sm transition-colors">
+              <a href="https://wa.me/14438501407" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#C9A96E] text-sm transition-colors">
                 WhatsApp Inquiry
               </a>
               <p className="text-gray-500 text-sm">
@@ -48,7 +48,7 @@ export default function Footer() {
           <p className="text-gray-500 text-xs">&copy; {new Date().getFullYear()} Jirapa Executive Residence. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/contact" className="text-gray-500 hover:text-[#C9A96E] text-xs transition-colors">Contact</Link>
-            <a href="https://wa.me/233XXXXXXXXX" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#C9A96E] text-xs transition-colors">WhatsApp</a>
+            <a href="https://wa.me/14438501407" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#C9A96E] text-xs transition-colors">WhatsApp</a>
             <a href="mailto:stay@jiraparesidence.com" className="text-gray-500 hover:text-[#C9A96E] text-xs transition-colors">Email</a>
           </div>
         </div>
