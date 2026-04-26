@@ -38,7 +38,9 @@ export default function Footer() {
                 WhatsApp Inquiry
               </a>
               <p className="text-gray-500 text-sm">
-                Jirapa, Upper West Region<br />Ghana
+                High Tension North St<br />
+                Jirapa, Upper West Region<br />
+                Ghana · XJ-0002-1275
               </p>
             </div>
           </div>

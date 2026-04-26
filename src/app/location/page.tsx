@@ -19,7 +19,7 @@ export default function LocationPage() {
               {/* Map */}
               <div className="rounded-xl overflow-hidden border border-[#1F1F1F] h-[400px] lg:h-[500px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15530.0!2d-2.7500!3d10.5333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfd1e5e5e5e5e5e5%3A0x0!2sJirapa%2C%20Upper%20West%20Region%2C%20Ghana!5e0!3m2!1sen!2sgh!4v1700000000000!5m2!1sen!2sgh"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15530.0!2d-2.69438!3d10.53963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfd1e5e5e5e5e5e5%3A0x0!2sJirapa%2C%20Upper%20West%20Region%2C%20Ghana!5e0!3m2!1sen!2sgh!4v1700000000000!5m2!1sen!2sgh"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -34,9 +34,35 @@ export default function LocationPage() {
               <div className="flex flex-col gap-6">
                 <div className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6">
                   <h3 className="text-[#C9A96E] font-semibold mb-3" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>Jirapa, Upper West Region</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-gray-400 text-sm leading-relaxed mb-4">
                     Jirapa sits at the crossroads of the Upper West Region — accessible, connected, and central to Wa, Lawra, and the broader corridor. Ideal base for field operations, government visits, and diaspora stays.
                   </p>
+                  <div className="bg-[#0A0A0A] rounded-lg p-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Digital Address</span>
+                      <span className="text-[#C9A96E] font-mono font-semibold">XJ-0002-1275</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Street</span>
+                      <span className="text-gray-300">High Tension North St</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">District</span>
+                      <span className="text-gray-300">Jirapa</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Region</span>
+                      <span className="text-gray-300">Upper West</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Post Code</span>
+                      <span className="text-gray-300">XJ0002</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Coordinates</span>
+                      <span className="text-gray-300 font-mono text-xs">10.5396, -2.6944</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6">
