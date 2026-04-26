@@ -16,7 +16,7 @@ export default function CTASection() {
             Request Availability
           </Link>
           <a
-            href="https://wa.me/14438501407"
+            href="https://wa.me/233557449657"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline text-base px-8 py-4"

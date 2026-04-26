@@ -40,7 +40,7 @@ export default function LocationPage() {
                   <div className="bg-[#0A0A0A] rounded-lg p-4 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Digital Address</span>
-                      <span className="text-[#C9A96E] font-mono font-semibold">XJ-0002-1275</span>
+                      <a href="https://ghanapostgps.com/map/?gps=XJ00021275" target="_blank" rel="noopener noreferrer" className="text-[#C9A96E] font-mono font-semibold hover:underline">XJ-0002-1275</a>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Street</span>
