@@ -17,20 +17,14 @@ export default function Experience() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Video placeholder */}
-          <div className="relative rounded-xl overflow-hidden bg-[#111111] border border-[#1F1F1F] aspect-video flex items-center justify-center group cursor-pointer">
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-50 transition-opacity"
-              style={{
-                backgroundImage: "url('/interior-living.jpg')",
-              }}
+          <div className="relative rounded-xl overflow-hidden bg-[#111111] border border-[#1F1F1F] aspect-video">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/6s0ZPDT2wac?rel=0&modestbranding=1"
+              title="Jirapa Executive Residence Tour"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             />
-            <div className="relative z-10 flex flex-col items-center gap-3">
-              <div className="w-16 h-16 rounded-full border-2 border-[#C9A96E] flex items-center justify-center group-hover:bg-[#C9A96E]/10 transition-colors">
-                <svg className="w-7 h-7 text-[#C9A96E] ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-              </div>
-              <span className="text-[#C9A96E] text-sm tracking-wide">Watch the Tour</span>
-            </div>
           </div>
 
           {/* Features list */}
