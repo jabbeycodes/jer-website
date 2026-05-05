@@ -33,7 +33,7 @@ export default function ResidencePage() {
                 { title: "Security", items: ["Electric perimeter fencing", "24/7 CCTV surveillance", "Gated compound access", "On-site security personnel"] },
                 { title: "Connectivity", items: ["Starlink high-speed internet", "Backup connectivity", "Video conferencing ready", "Reliable power supply"] },
                 { title: "Living Spaces", items: ["Spacious multi-room layout", "Indoor-outdoor living areas", "Balcony and hosting spaces", "Private parking"] },
-                { title: "Services", items: ["Housekeeping on request", "Meal preparation available", "Airport pickup arrangement", "Local logistics support"] },
+                { title: "Services", items: ["Housekeeping on request", "Catering & meal preparation", "Airport pickup coordination", "Event & retreat support", "Concierge & logistics"] },
               ].map((section) => (
                 <div key={section.title} className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6">
                   <h3 className="text-[#C9A96E] font-semibold mb-3" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>{section.title}</h3>
@@ -47,6 +47,26 @@ export default function ResidencePage() {
                   </ul>
                 </div>
               ))}
+            </div>
+
+            <div className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 mb-12">
+              <h3 className="text-2xl font-semibold mb-6 text-center" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>Nightly Rates</h3>
+              <p className="text-gray-400 text-center mb-6">Starting from <span className="text-[#C9A96E] font-bold">$250/night</span>. Rates vary by occupancy.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  { guests: "1–2", rate: "$250 – $280" },
+                  { guests: "3–4", rate: "$300 – $350" },
+                  { guests: "5–6", rate: "$380 – $450" },
+                  { guests: "7–8", rate: "$480 – $600" },
+                ].map((tier) => (
+                  <div key={tier.guests} className="bg-[#111111] border border-[#1F1F1F] rounded-lg p-4 text-center">
+                    <p className="text-[#C9A96E] font-semibold">{tier.guests} guests</p>
+                    <p className="text-gray-300 text-sm mt-1">{tier.rate}</p>
+                    <p className="text-gray-500 text-xs mt-1">per night</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-gray-500 text-xs mt-4 text-center">Final pricing depends on duration and service requirements. Longer stays receive customized rates.</p>
             </div>
 
             <div className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 text-center">

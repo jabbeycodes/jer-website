@@ -55,7 +55,8 @@ export default function CorporatePage() {
 
             <div className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 text-center">
               <h3 className="text-xl font-semibold mb-3" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>Discuss Corporate Rates</h3>
-              <p className="text-gray-400 mb-6">We offer retainer agreements and institutional pricing for organizations with recurring needs in the Upper West Region.</p>
+              <p className="text-gray-400 mb-2">Custom pricing for NGO teams and institutional stays.</p>
+              <p className="text-[#C9A96E] font-semibold mb-6">Monthly packages: $4,500 – $6,000</p>
               <a href="/contact" className="btn-gold">Request a Proposal</a>
             </div>
           </div>

@@ -142,7 +142,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       className="w-full bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-3 text-white focus:border-[#C9A96E] focus:outline-none transition-colors"
                     >
-                      {[1, 2, 3, 4, 5, 6].map((n) => (
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
                         <option key={n} value={n}>{n} {n === 1 ? "guest" : "guests"}</option>
                       ))}
                     </select>
@@ -184,6 +184,31 @@ export default function ContactPage() {
                 </button>
               </form>
             )}
+
+            <div className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 mt-8">
+              <h3 className="text-xl font-semibold mb-4 text-center" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>Direct Contact &amp; Payment</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                <div>
+                  <p className="text-[#C9A96E] font-semibold mb-1">WhatsApp / Phone</p>
+                  <p className="text-gray-400"><a href="https://wa.me/233557449657" className="hover:text-[#C9A96E] transition-colors">+233 55 744 9657</a></p>
+                </div>
+                <div>
+                  <p className="text-[#C9A96E] font-semibold mb-1">Bank Transfer</p>
+                  <p className="text-gray-400">GCB KNUST Branch</p>
+                  <p className="text-gray-500 text-xs">Clement Sobari | 6031060009493</p>
+                </div>
+                <div>
+                  <p className="text-[#C9A96E] font-semibold mb-1">Mobile Money</p>
+                  <p className="text-gray-400">Clement Sobari</p>
+                  <p className="text-gray-500 text-xs">+233 55 744 9657</p>
+                </div>
+                <div>
+                  <p className="text-[#C9A96E] font-semibold mb-1">Location</p>
+                  <p className="text-gray-400">Jirapa, Upper West Region, Ghana</p>
+                </div>
+              </div>
+              <p className="text-gray-500 text-xs mt-4 text-center">Payment confirms reservation. Limited availability. Priority given to confirmed bookings.</p>
+            </div>
           </div>
         </section>
       </main>
