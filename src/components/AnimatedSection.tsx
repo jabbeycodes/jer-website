@@ -98,7 +98,7 @@ export function StaggerItem({
 export function AnimatedCard({
   children,
   className = "",
-  onClick?: () => void,
+  onClick,
 }: {
   children: ReactNode;
   className?: string;

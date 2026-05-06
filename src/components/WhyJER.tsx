@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "./AnimatedSection";
 import Link from "next/link";
 
