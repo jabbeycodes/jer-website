@@ -1,27 +1,56 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 
+import { HERO_SHOTS } from "@/data/heroShots";
+
+/** Time each slide is fully visible before crossfading to the next. */
+const ROTATE_MS = 6000;
+
 export default function Hero() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setActiveIndex((i) => (i + 1) % HERO_SHOTS.length);
+    }, ROTATE_MS);
+    return () => window.clearInterval(id);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image */}
+      {/* Background: crossfade across multiple property photos */}
       <motion.div
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
         transition={{ duration: 8, ease: "easeOut" }}
         className="absolute inset-0"
       >
-        <Image
-          src="/hero-mansion.jpg"
-          alt="Jirapa Executive Residence - luxury mansion"
-          fill
-          className="object-cover"
-          priority
-          quality={90}
-        />
+        {HERO_SHOTS.map((shot, index) => (
+          <div
+            key={shot.src}
+            className="absolute inset-0 transition-opacity duration-[2200ms] ease-in-out"
+            style={{
+              opacity: index === activeIndex ? 1 : 0,
+              zIndex: index === activeIndex ? 1 : 0,
+            }}
+          >
+            {/* Native img: avoids Next/Image lazy-loading skipping stacked slides on Vercel; paths are static under /public */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={shot.src}
+              alt={shot.alt}
+              width={1920}
+              height={1080}
+              loading="eager"
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "low"}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        ))}
       </motion.div>
       <div className="hero-overlay absolute inset-0" />
 

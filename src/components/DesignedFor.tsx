@@ -2,7 +2,7 @@ const audiences = [
   {
     title: "NGO & Development Teams",
     description: "Secure base for field operations, donor visits, and regional coordination.",
-    image: "/exterior-day.jpg",
+    image: "/workspace.jpg",
   },
   {
     title: "Government Visits",
