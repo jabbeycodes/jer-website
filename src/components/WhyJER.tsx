@@ -1,3 +1,9 @@
+"use client";
+
+import { motion } from "framer-motion";
+import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "./AnimatedSection";
+import Link from "next/link";
+
 export default function WhyJER() {
   const features = [
     {
@@ -29,25 +35,31 @@ export default function WhyJER() {
   return (
     <section className="section-padding bg-[#111111]">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Why Choose Us</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-            Why Jirapa Executive <span className="gold-gradient">Residence</span>
-          </h2>
-        </div>
+        <AnimatedSection>
+          <div className="text-center mb-12">
+            <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Why Choose Us</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              Why Jirapa Executive <span className="gold-gradient">Residence</span>
+            </h2>
+          </div>
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8" staggerDelay={0.15}>
           {features.map((feature) => (
-            <div key={feature.title} className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 card-hover">
-              <div className="feature-icon">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-                {feature.title}
-              </h3>
-              <p className="text-[#C9A96E] text-sm mb-3 tracking-wide">{feature.subtitle}</p>
-              <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
-            </div>
+            <StaggerItem key={feature.title}>
+              <Link href="/residence" className="block h-full">
+                <AnimatedCard className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-8 h-full">
+                  <div className="feature-icon">{feature.icon}</div>
+                  <h3 className="text-xl font-semibold mb-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                    {feature.title}
+                  </h3>
+                  <p className="text-[#C9A96E] text-sm mb-3 tracking-wide">{feature.subtitle}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{feature.description}</p>
+                </AnimatedCard>
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

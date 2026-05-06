@@ -1,3 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
+import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "./AnimatedSection";
+
 export default function Infrastructure() {
   const items = [
     {
@@ -33,22 +38,26 @@ export default function Infrastructure() {
   return (
     <section className="section-padding bg-[#111111] border-y border-[#1F1F1F]">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Built for Operations</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
-            Infrastructure That Supports <span className="gold-gradient">High-Level Travel</span>
-          </h2>
-        </div>
+        <AnimatedSection>
+          <div className="text-center mb-12">
+            <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Built for Operations</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              Infrastructure That Supports <span className="gold-gradient">High-Level Travel</span>
+            </h2>
+          </div>
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.12}>
           {items.map((item) => (
-            <div key={item.title} className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6 text-center card-hover">
-              <div className="flex justify-center text-[#C9A96E] mb-4">{item.icon}</div>
-              <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>{item.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
-            </div>
+            <StaggerItem key={item.title}>
+              <AnimatedCard className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6 text-center h-full">
+                <div className="flex justify-center text-[#C9A96E] mb-4">{item.icon}</div>
+                <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>{item.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
+              </AnimatedCard>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

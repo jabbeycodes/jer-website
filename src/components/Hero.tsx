@@ -1,33 +1,66 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
-      <Image
-        src="/hero-mansion.jpg"
-        alt="Jirapa Executive Residence - luxury mansion"
-        fill
-        className="object-cover"
-        priority
-        quality={90}
-      />
+      <motion.div
+        initial={{ scale: 1.1 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 8, ease: "easeOut" }}
+        className="absolute inset-0"
+      >
+        <Image
+          src="/hero-mansion.jpg"
+          alt="Jirapa Executive Residence - luxury mansion"
+          fill
+          className="object-cover"
+          priority
+          quality={90}
+        />
+      </motion.div>
       <div className="hero-overlay absolute inset-0" />
 
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 pt-20">
-        <p className="text-[#C9A96E] text-sm md:text-base tracking-[0.3em] uppercase mb-6 font-medium">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="text-[#C9A96E] text-sm md:text-base tracking-[0.3em] uppercase mb-6 font-medium"
+        >
           Jirapa Executive Residence
-        </p>
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+        </motion.p>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
           A Private Executive Residence in{" "}
           <span className="gold-gradient">Upper West Ghana</span>
-        </h1>
-        <p className="text-lg md:text-xl text-gray-300 mb-10 tracking-wide">
-          Secure. Connected. Private.
-        </p>
+        </motion.h1>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="text-lg md:text-xl text-gray-300 mb-10 tracking-wide"
+        >
+          Secure. Connected. Private.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+        >
           <Link href="/contact" className="btn-gold text-base">
             Request Availability
           </Link>
@@ -35,10 +68,15 @@ export default function Hero() {
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             Watch Video
           </a>
-        </div>
+        </motion.div>
 
         {/* Feature icons bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+        >
           {[
             { label: "Electric Fencing", icon: (
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
@@ -53,13 +91,37 @@ export default function Hero() {
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h1.5m13.5 0H21M3 6h1.5M19.5 6H21M3 9h1.5M19.5 9H21" /></svg>
             ) },
           ].map((item) => (
-            <div key={item.label} className="flex flex-col items-center gap-2">
+            <motion.div
+              key={item.label}
+              whileHover={{ y: -4, scale: 1.05 }}
+              className="flex flex-col items-center gap-2"
+            >
               <span className="text-[#C9A96E]">{item.icon}</span>
               <span className="text-xs md:text-sm text-gray-300 tracking-wide uppercase">{item.label}</span>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-6 h-10 border-2 border-[#C9A96E]/50 rounded-full flex justify-center pt-2"
+        >
+          <motion.div
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-1.5 h-1.5 rounded-full bg-[#C9A96E]"
+          />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
