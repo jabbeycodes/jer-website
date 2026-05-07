@@ -1,25 +1,37 @@
-import { NextResponse } from "next/server";
-
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
+import { apiJson, isProduction } from "@/lib/apiResponse";
+import { getSupabaseServiceConfig } from "@/lib/supabaseServer";
 
 export async function GET() {
+  const config = getSupabaseServiceConfig();
+  if (!config) {
+    return apiJson({ error: isProduction ? "Service temporarily unavailable." : "Missing Supabase configuration." }, { status: 503 });
+  }
+
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/jer_bookings?order=created_at.desc`, {
+    const res = await fetch(`${config.url}/rest/v1/jer_bookings?order=created_at.desc`, {
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
       },
     });
 
     if (!res.ok) {
-      return NextResponse.json({ error: "Failed to fetch bookings" }, { status: 500 });
+      if (!isProduction) {
+        console.error("Bookings list Supabase error:", res.status, await res.clone().text());
+      } else {
+        console.error("Bookings list Supabase error:", res.status);
+      }
+      return apiJson({ error: "Unable to load bookings." }, { status: 502 });
     }
 
     const bookings = await res.json();
-    return NextResponse.json({ bookings });
-  } catch (err) {
-    console.error("Bookings list error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return apiJson({ bookings });
+  } catch (e) {
+    if (!isProduction) {
+      console.error("Bookings list error", e);
+    } else {
+      console.error("Bookings list error");
+    }
+    return apiJson({ error: "Unable to load bookings." }, { status: 500 });
   }
 }

@@ -1,25 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
+import { apiJson, isProduction } from "@/lib/apiResponse";
+import { getSupabaseServiceConfig } from "@/lib/supabaseServer";
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function POST(req: NextRequest) {
+  const config = getSupabaseServiceConfig();
+  if (!config) {
+    return apiJson({ error: isProduction ? "Service temporarily unavailable." : "Missing Supabase configuration." }, { status: 503 });
+  }
+
   try {
     const { id, status } = await req.json();
 
     if (!id || !status) {
-      return NextResponse.json({ error: "id and status required" }, { status: 400 });
+      return apiJson({ error: "id and status required" }, { status: 400 });
+    }
+
+    if (typeof id !== "string" || !UUID_RE.test(id)) {
+      return apiJson({ error: "Invalid booking id" }, { status: 400 });
     }
 
     if (!["pending", "confirmed", "declined", "completed"].includes(status)) {
-      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+      return apiJson({ error: "Invalid status" }, { status: 400 });
     }
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/jer_bookings?id=eq.${id}`, {
+    const res = await fetch(`${config.url}/rest/v1/jer_bookings?id=eq.${id}`, {
       method: "PATCH",
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
@@ -27,13 +38,22 @@ export async function POST(req: NextRequest) {
     });
 
     if (!res.ok) {
-      return NextResponse.json({ error: "Failed to update booking" }, { status: 500 });
+      if (!isProduction) {
+        console.error("Booking update Supabase error:", res.status, await res.clone().text());
+      } else {
+        console.error("Booking update Supabase error:", res.status);
+      }
+      return apiJson({ error: "Unable to update booking." }, { status: 502 });
     }
 
-    const booking = await res.json();
-    return NextResponse.json({ success: true, booking: booking[0] });
-  } catch (err) {
-    console.error("Booking update error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    await res.json();
+    return apiJson({ success: true });
+  } catch (e) {
+    if (!isProduction) {
+      console.error("Booking update error", e);
+    } else {
+      console.error("Booking update error");
+    }
+    return apiJson({ error: "Unable to update booking." }, { status: 500 });
   }
 }

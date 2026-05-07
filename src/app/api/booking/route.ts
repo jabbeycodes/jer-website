@@ -1,34 +1,44 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
+import { apiJson, isProduction } from "@/lib/apiResponse";
+import { getSupabaseServiceConfig } from "@/lib/supabaseServer";
 
 export async function POST(req: NextRequest) {
+  const config = getSupabaseServiceConfig();
+  if (!config) {
+    return apiJson(
+      { error: isProduction ? "Service temporarily unavailable." : "Booking service is not configured (missing Supabase URL or server key)." },
+      { status: 503 }
+    );
+  }
+
   try {
     const data = await req.json();
 
-    // Validate required fields
     if (!data.name || !data.email || !data.checkIn || !data.checkOut) {
-      return NextResponse.json({ error: "Name, email, check-in, and check-out are required" }, { status: 400 });
+      return apiJson({ error: "Name, email, check-in, and check-out are required" }, { status: 400 });
     }
 
+    const guestsNum = Number.parseInt(String(data.guests ?? "1"), 10);
+    const guests = Number.isFinite(guestsNum) && guestsNum > 0 ? guestsNum : 1;
+
     const booking = {
-      name: data.name,
-      email: data.email,
-      organization: data.organization || null,
-      check_in: data.checkIn,
-      check_out: data.checkOut,
-      guests: data.guests || 1,
-      purpose: data.purpose || null,
-      message: data.message || null,
+      name: String(data.name).trim(),
+      email: String(data.email).trim(),
+      organization: data.organization ? String(data.organization).trim() || null : null,
+      check_in: String(data.checkIn).trim(),
+      check_out: String(data.checkOut).trim(),
+      guests,
+      purpose: data.purpose ? String(data.purpose).trim() || null : null,
+      message: data.message ? String(data.message).trim() || null : null,
       status: "pending",
     };
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/jer_bookings`, {
+    const res = await fetch(`${config.url}/rest/v1/jer_bookings`, {
       method: "POST",
       headers: {
-        apikey: SUPABASE_SERVICE_KEY,
-        Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+        apikey: config.key,
+        Authorization: `Bearer ${config.key}`,
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
@@ -36,15 +46,28 @@ export async function POST(req: NextRequest) {
     });
 
     if (!res.ok) {
-      const err = await res.text();
-      console.error("Supabase insert error:", err);
-      return NextResponse.json({ error: "Failed to submit booking" }, { status: 500 });
+      const errText = await res.text();
+      if (!isProduction) {
+        console.error("Supabase insert error:", res.status, errText);
+      } else {
+        console.error("Supabase insert error:", res.status);
+      }
+      return apiJson(
+        {
+          error: isProduction ? "Unable to complete your request." : `Supabase error (${res.status}). ${errText.slice(0, 280)}`,
+        },
+        { status: 502 }
+      );
     }
 
-    const result = await res.json();
-    return NextResponse.json({ success: true, booking: result[0] });
+    await res.json();
+    return apiJson({ success: true });
   } catch (err) {
-    console.error("Booking API error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    if (!isProduction) {
+      console.error("Booking API error:", err);
+    } else {
+      console.error("Booking API error");
+    }
+    return apiJson({ error: "Unable to complete your request." }, { status: 500 });
   }
 }

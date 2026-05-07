@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -27,66 +30,123 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdminBookings() {
+  const router = useRouter();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [redirecting, setRedirecting] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [logoutBusy, setLogoutBusy] = useState(false);
 
   useEffect(() => {
-    fetchBookings();
-  }, []);
+    async function load() {
+      setActionError(null);
+      const me = await fetch("/api/admin/me", { credentials: "same-origin" });
+      if (!me.ok) {
+        setRedirecting(true);
+        router.replace("/admin?next=/admin/bookings");
+        return;
+      }
 
-  async function fetchBookings() {
-    try {
-      const res = await fetch("/api/admin/bookings-list");
-      const data = await res.json();
-      setBookings(data.bookings || []);
-    } catch (err) {
-      console.error("Failed to fetch bookings:", err);
-    } finally {
+      const res = await fetch("/api/admin/bookings-list", { credentials: "same-origin" });
+      if (!res.ok) {
+        setActionError("Could not load bookings. Try again, or sign out and sign back in.");
+        setBookings([]);
+      } else {
+        const data = await res.json();
+        setBookings(data.bookings || []);
+      }
       setLoading(false);
     }
-  }
+    void load();
+  }, [router]);
 
   async function updateStatus(id: string, status: string) {
+    setActionError(null);
+    if (status === "declined" && !window.confirm("Decline this booking request?")) {
+      return;
+    }
     try {
-      await fetch("/api/admin/booking-update", {
+      const res = await fetch("/api/admin/booking-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ id, status }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setActionError(typeof data.error === "string" ? data.error : "Update failed.");
+        return;
+      }
       setBookings((prev) =>
         prev.map((b) => (b.id === id ? { ...b, status, updated_at: new Date().toISOString() } : b))
       );
-    } catch (err) {
-      console.error("Failed to update booking:", err);
+    } catch {
+      setActionError("Network error while updating.");
     }
   }
 
-  const pending = bookings.filter((b) => b.status === "pending");
-  const confirmed = bookings.filter((b) => b.status === "confirmed");
+  async function handleLogout() {
+    setLogoutBusy(true);
+    try {
+      await fetch("/api/admin/logout", { method: "POST", credentials: "same-origin" });
+      router.replace("/admin");
+    } finally {
+      setLogoutBusy(false);
+    }
+  }
+
+  if (redirecting) {
+    return (
+      <>
+        <Navbar />
+        <main className="pt-20 min-h-screen flex items-center justify-center bg-[#111111]">
+          <p className="text-gray-500">Redirecting to sign in…</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
       <Navbar />
       <main className="pt-20 min-h-screen bg-[#111111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
               <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-1">Admin Dashboard</p>
               <h1 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                 Booking Management
               </h1>
             </div>
-            <div className="flex gap-4 text-sm">
-              <div className="bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-2">
-                <span className="text-yellow-400 font-bold">{pending.length}</span>{" "}
-                <span className="text-gray-400">Pending</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex gap-4 text-sm">
+                <div className="bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-2">
+                  <span className="text-yellow-400 font-bold">{bookings.filter((b) => b.status === "pending").length}</span>{" "}
+                  <span className="text-gray-400">Pending</span>
+                </div>
+                <div className="bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-2">
+                  <span className="text-green-400 font-bold">{bookings.filter((b) => b.status === "confirmed").length}</span>{" "}
+                  <span className="text-gray-400">Confirmed</span>
+                </div>
               </div>
-              <div className="bg-[#111111] border border-[#1F1F1F] rounded-lg px-4 py-2">
-                <span className="text-green-400 font-bold">{confirmed.length}</span>{" "}
-                <span className="text-gray-400">Confirmed</span>
-              </div>
+              <Link href="/admin" className="text-sm text-gray-400 hover:text-white border border-[#1F1F1F] rounded-lg px-4 py-2">
+                Dashboard
+              </Link>
+              <button
+                type="button"
+                onClick={() => void handleLogout()}
+                disabled={logoutBusy}
+                className="text-sm text-gray-400 hover:text-white border border-[#1F1F1F] rounded-lg px-4 py-2 disabled:opacity-50"
+              >
+                {logoutBusy ? "Signing out…" : "Sign out"}
+              </button>
             </div>
           </div>
+
+          {actionError && (
+            <div className="mb-6 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300">{actionError}</div>
+          )}
 
           {loading ? (
             <div className="text-center py-20 text-gray-500">Loading bookings...</div>
@@ -100,22 +160,21 @@ export default function AdminBookings() {
               {bookings
                 .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                 .map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6 card-hover"
-                  >
+                  <div key={booking.id} className="bg-[#111111] border border-[#1F1F1F] rounded-xl p-6 card-hover">
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-lg font-semibold">{booking.name}</h3>
-                          <span className={`text-xs px-2 py-0.5 rounded-full border ${statusColors[booking.status] || "bg-gray-500/20 text-gray-400 border-gray-500/30"}`}>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded-full border ${
+                              statusColors[booking.status] || "bg-gray-500/20 text-gray-400 border-gray-500/30"
+                            }`}
+                          >
                             {booking.status}
                           </span>
                         </div>
                         <p className="text-gray-400 text-sm">{booking.email}</p>
-                        {booking.organization && (
-                          <p className="text-gray-500 text-sm mt-0.5">{booking.organization}</p>
-                        )}
+                        {booking.organization && <p className="text-gray-500 text-sm mt-0.5">{booking.organization}</p>}
                       </div>
 
                       <div className="flex flex-col md:items-end gap-1 text-sm">
@@ -137,21 +196,21 @@ export default function AdminBookings() {
                     </div>
 
                     {booking.message && (
-                      <p className="text-gray-400 text-sm mt-3 border-l-2 border-[#C9A96E]/30 pl-4">
-                        {booking.message}
-                      </p>
+                      <p className="text-gray-400 text-sm mt-3 border-l-2 border-[#C9A96E]/30 pl-4">{booking.message}</p>
                     )}
 
                     {booking.status === "pending" && (
                       <div className="flex gap-2 mt-4">
                         <button
-                          onClick={() => updateStatus(booking.id, "confirmed")}
+                          type="button"
+                          onClick={() => void updateStatus(booking.id, "confirmed")}
                           className="px-4 py-2 rounded-lg bg-green-600/20 border border-green-500/30 text-green-400 text-sm hover:bg-green-600/30 transition-colors"
                         >
                           Confirm
                         </button>
                         <button
-                          onClick={() => updateStatus(booking.id, "declined")}
+                          type="button"
+                          onClick={() => void updateStatus(booking.id, "declined")}
                           className="px-4 py-2 rounded-lg bg-red-600/20 border border-red-500/30 text-red-400 text-sm hover:bg-red-600/30 transition-colors"
                         >
                           Decline
@@ -162,7 +221,8 @@ export default function AdminBookings() {
                     {booking.status === "confirmed" && (
                       <div className="flex gap-2 mt-4">
                         <button
-                          onClick={() => updateStatus(booking.id, "completed")}
+                          type="button"
+                          onClick={() => void updateStatus(booking.id, "completed")}
                           className="px-4 py-2 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-400 text-sm hover:bg-blue-600/30 transition-colors"
                         >
                           Mark Completed

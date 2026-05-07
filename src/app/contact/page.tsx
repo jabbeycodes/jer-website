@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
+import { bookingFormUserMessage } from "@/lib/clientPublicMessage";
 
 function ContactForm() {
   const searchParams = useSearchParams();
@@ -20,6 +21,7 @@ function ContactForm() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Prefill from query params when user clicks a pricing tier
   useEffect(() => {
@@ -57,20 +59,27 @@ function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitError(null);
     try {
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = await res.json();
-      if (data.success) {
-        setSubmitted(true);
-      } else {
-        alert("Failed to submit. Please email us directly.");
+      let data: { success?: boolean; error?: string } = {};
+      try {
+        data = await res.json();
+      } catch {
+        setSubmitError(bookingFormUserMessage(res.status, {}));
+        return;
       }
+      if (res.ok && data.success) {
+        setSubmitted(true);
+        return;
+      }
+      setSubmitError(bookingFormUserMessage(res.status, data));
     } catch {
-      alert("Network error. Please email us directly.");
+      setSubmitError("Network error. Check your connection or contact us on WhatsApp below.");
     } finally {
       setSubmitting(false);
     }
@@ -203,6 +212,12 @@ function ContactForm() {
                 placeholder="Any special requirements, questions, or details about your stay..."
               />
             </div>
+
+            {submitError && (
+              <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300 whitespace-pre-wrap">
+                {submitError}
+              </div>
+            )}
 
             <button type="submit" disabled={submitting} className="btn-gold w-full justify-center text-base py-4">
               {submitting ? "Submitting..." : "Submit Inquiry"}
