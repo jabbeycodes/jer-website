@@ -12,8 +12,8 @@ function contentSecurityPolicy() {
   const parts = [
     "default-src 'self'",
     scriptSrc,
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com data:",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self' data:",
     "img-src 'self' data: blob: https:",
     "connect-src 'self'",
     "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com https://*.google.com",

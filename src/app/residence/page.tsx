@@ -2,22 +2,32 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "@/components/AnimatedSection";
 import Link from "next/link";
+import { resolvePublicSiteMedia } from "@/lib/galleryLayout";
+
+export const dynamic = "force-dynamic";
 
 const tiers = [
   { guests: "1–2", rate: "$250 – $280", minGuests: 1, maxGuests: 2, rateLabel: "250" },
   { guests: "3–4", rate: "$300 – $350", minGuests: 3, maxGuests: 4, rateLabel: "300" },
-  { guests: "5–6", rate: "$380 – $450", minGuests: 5, maxGuests: 6, rateLabel: "380" },
-  { guests: "7–8", rate: "$480 – $600", minGuests: 7, maxGuests: 8, rateLabel: "480" },
+  { guests: "5–6", rate: "$380 – $400", minGuests: 5, maxGuests: 6, rateLabel: "400" },
+  { guests: "7–8", rate: "$400 (capped)", minGuests: 7, maxGuests: 8, rateLabel: "400" },
 ];
 
-export default function ResidencePage() {
+export default async function ResidencePage() {
+  const { residenceHero } = await resolvePublicSiteMedia();
+
   return (
     <>
       <Navbar />
       <main className="pt-20">
         {/* Hero */}
         <section className="relative h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/interior-living.jpg')" }} />
+          <div
+            role="img"
+            aria-label={residenceHero.alt}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${residenceHero.src}')` }}
+          />
           <div className="hero-overlay absolute inset-0" />
           <AnimatedSection className="relative z-10 text-center px-4" delay={0.2}>
             <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">The Residence</p>

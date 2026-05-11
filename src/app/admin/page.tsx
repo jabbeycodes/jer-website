@@ -193,12 +193,23 @@ export default function AdminPage() {
             </div>
           </div>
 
-          <Link href="/admin/bookings" className="btn-gold inline-flex items-center">
-            Manage Bookings
-            <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
+            <Link href="/admin/bookings" className="btn-gold inline-flex items-center">
+              Manage Bookings
+              <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <Link
+              href="/admin/gallery"
+              className="inline-flex items-center justify-center border border-[#C9A96E]/50 text-[#C9A96E] rounded-lg px-6 py-3 text-sm font-medium hover:bg-[#C9A96E]/10 transition-colors"
+            >
+              Site images
+              <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </main>
       <Footer />

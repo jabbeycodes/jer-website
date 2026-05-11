@@ -3,7 +3,12 @@
 import { motion } from "framer-motion";
 import AnimatedSection, { StaggerContainer, StaggerItem } from "./AnimatedSection";
 
-export default function Experience() {
+type Props = {
+  /** Full HTTPS embed URL (YouTube or other allowed in CSP). */
+  embedUrl: string;
+};
+
+export default function Experience({ embedUrl }: Props) {
   const features = [
     "Spacious multi-room layout",
     "Indoor-outdoor living",
@@ -32,7 +37,7 @@ export default function Experience() {
             >
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/6s0ZPDT2wac?rel=0&modestbranding=1"
+                src={embedUrl}
                 title="Jirapa Executive Residence Tour"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

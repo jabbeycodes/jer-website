@@ -35,7 +35,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === "/admin/bookings" || pathname.startsWith("/admin/bookings/")) {
+  if (
+    pathname === "/admin/bookings" ||
+    pathname.startsWith("/admin/bookings/") ||
+    pathname === "/admin/gallery" ||
+    pathname.startsWith("/admin/gallery/")
+  ) {
     if (!(await hasValidAdminSession(request))) {
       const u = new URL("/admin", request.url);
       u.searchParams.set("next", pathname);
@@ -48,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/bookings", "/admin/bookings/:path*", "/api/admin/:path*"],
+  matcher: ["/admin/bookings", "/admin/bookings/:path*", "/admin/gallery", "/admin/gallery/:path*", "/api/admin/:path*"],
 };

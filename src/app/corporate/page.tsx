@@ -2,15 +2,25 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "@/components/AnimatedSection";
 import Link from "next/link";
+import { resolvePublicSiteMedia } from "@/lib/galleryLayout";
 
-export default function CorporatePage() {
+export const dynamic = "force-dynamic";
+
+export default async function CorporatePage() {
+  const { corporateHero } = await resolvePublicSiteMedia();
+
   return (
     <>
       <Navbar />
       <main className="pt-20">
         {/* Hero */}
         <section className="relative h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/exterior-day.jpg')" }} />
+          <div
+            role="img"
+            aria-label={corporateHero.alt}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url('${corporateHero.src}')` }}
+          />
           <div className="hero-overlay absolute inset-0" />
           <AnimatedSection className="relative z-10 text-center px-4" delay={0.2}>
             <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-3">Corporate</p>

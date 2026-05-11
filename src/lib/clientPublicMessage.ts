@@ -22,5 +22,9 @@ export function bookingFormUserMessage(status: number, body: { error?: string })
     return "We could not save your inquiry. Please try again or use WhatsApp below.";
   }
 
+  if (status === 429) {
+    return "Too many submissions from this device. Please wait a few minutes or message us on WhatsApp.";
+  }
+
   return "Something went wrong. Please try again or contact us directly.";
 }

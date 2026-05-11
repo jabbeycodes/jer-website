@@ -36,8 +36,7 @@ function ContactForm() {
       const rateMap: Record<string, string> = {
         "250": "Interested in the 1–2 guest tier ($250–$280/night).",
         "300": "Interested in the 3–4 guest tier ($300–$350/night).",
-        "380": "Interested in the 5–6 guest tier ($380–$450/night).",
-        "480": "Interested in the 7–8 guest tier ($480–$600/night).",
+        "400": "Interested in the 5+ guest tier (capped at $400/night).",
         "4500": "Interested in the Corporate Monthly Package ($4,500/month).",
         "6000": "Interested in the Corporate Monthly Package ($6,000/month).",
       };

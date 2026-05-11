@@ -1,7 +1,18 @@
 import { NextRequest } from "next/server";
 
 import { apiJson, isProduction } from "@/lib/apiResponse";
+import { jerRateLimitAllow, rateLimitKey } from "@/lib/rateLimitSupabase";
 import { getSupabaseServiceConfig } from "@/lib/supabaseServer";
+
+function bookingRateLimitMax(): number {
+  const n = Number.parseInt(process.env.BOOKING_RATE_LIMIT_MAX ?? "15", 10);
+  return Number.isFinite(n) && n > 0 ? n : 15;
+}
+
+function bookingRateLimitWindowSec(): number {
+  const n = Number.parseInt(process.env.BOOKING_RATE_LIMIT_WINDOW_SEC ?? "900", 10);
+  return Number.isFinite(n) && n > 0 ? n : 900;
+}
 
 export async function POST(req: NextRequest) {
   const config = getSupabaseServiceConfig();
@@ -9,6 +20,15 @@ export async function POST(req: NextRequest) {
     return apiJson(
       { error: isProduction ? "Service temporarily unavailable." : "Booking service is not configured (missing Supabase URL or server key)." },
       { status: 503 }
+    );
+  }
+
+  const rlKey = rateLimitKey("booking", req.headers);
+  const allowed = await jerRateLimitAllow(rlKey, bookingRateLimitMax(), bookingRateLimitWindowSec());
+  if (!allowed) {
+    return apiJson(
+      { error: isProduction ? "Too many requests. Please try again later." : "Rate limit exceeded for this IP." },
+      { status: 429 }
     );
   }
 

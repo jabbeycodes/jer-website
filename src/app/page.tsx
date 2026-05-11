@@ -7,17 +7,24 @@ import Infrastructure from "@/components/Infrastructure";
 import DesignedFor from "@/components/DesignedFor";
 import Location from "@/components/Location";
 import CTASection from "@/components/CTASection";
+import { getExperienceVideoEmbedUrl } from "@/lib/experienceVideo";
+import { resolvePublicSiteMedia } from "@/lib/galleryLayout";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const { designedFor } = await resolvePublicSiteMedia();
+  const experienceEmbedUrl = getExperienceVideoEmbedUrl();
+
   return (
     <>
       <Navbar />
       <main>
         <Hero />
         <WhyJER />
-        <Experience />
+        <Experience embedUrl={experienceEmbedUrl} />
         <Infrastructure />
-        <DesignedFor />
+        <DesignedFor slides={designedFor} />
         <Location />
         <CTASection />
       </main>

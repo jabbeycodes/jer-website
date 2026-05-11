@@ -1,37 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jirapa Executive Residence — marketing site
 
-## Getting Started
+Next.js 14 (App Router) site for JER: booking inquiries, admin tools, and configurable imagery.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+cp .env.local.example .env.local
+# Edit .env.local with your Supabase URL, service role key, and admin secrets.
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See **`.env.local.example`** for the full list. Minimum for production:
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_KEY` | **Server only** — REST service role key (never `NEXT_PUBLIC_`) |
+| `ADMIN_PASSWORD` | Admin sign-in |
+| `ADMIN_SESSION_SECRET` | JWT signing for admin cookie (≥32 characters) |
+
+Optional: `NEXT_PUBLIC_EXPERIENCE_VIDEO_EMBED_URL`, rate-limit tuning vars (documented in the example file).
+
+## Database migrations
+
+SQL lives in `supabase/migrations/`. Apply to your Supabase project:
+
+```bash
+supabase link --project-ref YOUR_PROJECT_REF
+npm run db:migrate
+```
+
+Or run each file in order in the Supabase SQL editor.
+
+Tables/functions used by the app include **`jer_bookings`**, **`jer_gallery_layout`**, **`jer_rate_limit_events`**, and RPC **`jer_check_rate_limit`**.
+
+## Operations
+
+- **Health check:** `GET /api/health` — returns `{ "ok": true }` for uptime monitors.
+- **Rate limits:** Booking and admin login use Supabase-backed limits per IP (configurable via env). Apply the latest migration so the RPC exists.
+- **Secrets:** Rotate keys if they were ever exposed in chat, tickets, or screenshots. Never commit `.env.local`.
+
+## Deploy (Vercel)
+
+Set the same environment variables in the Vercel project settings, then push to your connected branch.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Auto-deploy enabled
+- [Next.js Documentation](https://nextjs.org/docs)

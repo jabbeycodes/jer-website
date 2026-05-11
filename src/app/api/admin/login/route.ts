@@ -3,6 +3,17 @@ import { NextRequest } from "next/server";
 import { ADMIN_COOKIE_NAME } from "@/constants/admin";
 import { apiJson, isProduction } from "@/lib/apiResponse";
 import { createAdminSessionToken, verifyAdminPassword } from "@/lib/adminAuth";
+import { jerRateLimitAllow, rateLimitKey } from "@/lib/rateLimitSupabase";
+
+function loginRateLimitMax(): number {
+  const n = Number.parseInt(process.env.ADMIN_LOGIN_RATE_LIMIT_MAX ?? "10", 10);
+  return Number.isFinite(n) && n > 0 ? n : 10;
+}
+
+function loginRateLimitWindowSec(): number {
+  const n = Number.parseInt(process.env.ADMIN_LOGIN_RATE_LIMIT_WINDOW_SEC ?? "600", 10);
+  return Number.isFinite(n) && n > 0 ? n : 600;
+}
 
 export async function POST(req: NextRequest) {
   const password = process.env.ADMIN_PASSWORD;
@@ -10,6 +21,15 @@ export async function POST(req: NextRequest) {
     return apiJson(
       { error: isProduction ? "Service temporarily unavailable." : "Missing ADMIN_PASSWORD environment variable." },
       { status: 503 }
+    );
+  }
+
+  const rlKey = rateLimitKey("admin_login", req.headers);
+  const allowed = await jerRateLimitAllow(rlKey, loginRateLimitMax(), loginRateLimitWindowSec());
+  if (!allowed) {
+    return apiJson(
+      { error: isProduction ? "Too many attempts. Try again later." : "Rate limit exceeded for this IP." },
+      { status: 429 }
     );
   }
 

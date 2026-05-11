@@ -21,7 +21,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["'Playfair Display'", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
       },
     },
   },

@@ -1,31 +1,11 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { resolvePublicGalleryLayout } from "@/lib/galleryLayout";
 
-const GALLERY_DIR = path.join(process.cwd(), "public", "gallery");
+export const dynamic = "force-dynamic";
 
-function formatAlt(filename: string): string {
-  const base = filename.replace(/\.[^.]+$/i, "").replace(/_/g, " ");
-  return `Jirapa Executive Residence — ${base}`;
-}
-
-function getGalleryImages(): { src: string; alt: string }[] {
-  if (!fs.existsSync(GALLERY_DIR)) return [];
-
-  return fs
-    .readdirSync(GALLERY_DIR)
-    .filter((f) => /\.(jpe?g|webp)$/i.test(f))
-    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }))
-    .map((f) => ({
-      src: `/gallery/${f}`,
-      alt: formatAlt(f),
-    }));
-}
-
-export default function GalleryPage() {
-  const images = getGalleryImages();
+export default async function GalleryPage() {
+  const { galleryPage: images } = await resolvePublicGalleryLayout();
 
   return (
     <>
@@ -39,13 +19,14 @@ export default function GalleryPage() {
                 The <span className="gold-gradient">Gallery</span>
               </h1>
               <p className="text-gray-400 mt-4 max-w-xl mx-auto">
-                Full photography set of the residence, grounds, and surroundings ({images.length} images).
+                Curated photography of the residence, grounds, and surroundings ({images.length} images).
               </p>
             </div>
 
             {images.length === 0 ? (
               <p className="text-center text-gray-500">
-                No gallery images found. Add JPEG files to <code className="text-gray-400">public/gallery/</code>.
+                No images are selected for this page yet. Sign in to the admin dashboard under &quot;Gallery &amp; hero images&quot; to add
+                photos, or add JPEG/WebP files under <code className="text-gray-400">public/gallery/</code> and save a layout.
               </p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -73,7 +54,9 @@ export default function GalleryPage() {
 
             <div className="text-center mt-12">
               <p className="text-gray-500 text-sm mb-4">Want to see more? Schedule a virtual or in-person tour.</p>
-              <a href="/contact" className="btn-gold">Request a Tour</a>
+              <a href="/contact" className="btn-gold">
+                Request a Tour
+              </a>
             </div>
           </div>
         </section>
