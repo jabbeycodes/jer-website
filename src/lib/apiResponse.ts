@@ -8,9 +8,9 @@ const NO_STORE = {
 export const isProduction = process.env.NODE_ENV === "production";
 
 /** JSON API response with cache disabled (reduces accidental caching of sensitive payloads). */
-export function apiJson(data: unknown, init?: { status?: number }) {
+export function apiJson(data: unknown, init?: { status?: number; headers?: Record<string, string> }) {
   return NextResponse.json(data, {
     status: init?.status ?? 200,
-    headers: { ...NO_STORE },
+    headers: { ...NO_STORE, ...init?.headers },
   });
 }
