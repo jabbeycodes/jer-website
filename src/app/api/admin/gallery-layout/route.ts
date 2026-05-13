@@ -52,9 +52,11 @@ export async function GET() {
   }
 
   // Handle null values for columns added via ALTER TABLE
-  const rowDesignedFor = Array.isArray(row.designed_for) ? row.designed_for : [];
-  const rowCorporateHero = row.corporate_hero && typeof row.corporate_hero === "object" ? row.corporate_hero : null;
-  const rowResidenceHero = row.residence_hero && typeof row.residence_hero === "object" ? row.residence_hero : null;
+  const rowHero = Array.isArray(row.hero) && row.hero.length > 0 ? row.hero : defaults.hero;
+  const rowGalleryPage = Array.isArray(row.gallery_page) && row.gallery_page.length > 0 ? row.gallery_page : defaults.gallery_page;
+  const rowDesignedFor = Array.isArray(row.designed_for) && row.designed_for.length > 0 ? row.designed_for : defaults.designed_for;
+  const rowCorporateHero = row.corporate_hero && typeof row.corporate_hero === "object" ? row.corporate_hero : defaults.corporate_hero;
+  const rowResidenceHero = row.residence_hero && typeof row.residence_hero === "object" ? row.residence_hero : defaults.residence_hero;
 
   const safeDesigned = defaults.designed_for.map((d, i) => {
     const slide = rowDesignedFor[i];
@@ -64,14 +66,10 @@ export async function GET() {
 
   return NextResponse.json(
     {
-      hero: filterSlidesForAdmin(row.hero, allowed),
-      galleryPage: filterSlidesForAdmin(row.gallery_page, allowed),
-      corporateHero: rowCorporateHero
-        ? (filterSlidesForAdmin([rowCorporateHero as { src: string; alt: string }], allowed)[0] ?? defaults.corporate_hero)
-        : defaults.corporate_hero,
-      residenceHero: rowResidenceHero
-        ? (filterSlidesForAdmin([rowResidenceHero as { src: string; alt: string }], allowed)[0] ?? defaults.residence_hero)
-        : defaults.residence_hero,
+      hero: filterSlidesForAdmin(rowHero, allowed),
+      galleryPage: filterSlidesForAdmin(rowGalleryPage, allowed),
+      corporateHero: filterSlidesForAdmin([rowCorporateHero as { src: string; alt: string }], allowed)[0] ?? defaults.corporate_hero,
+      residenceHero: filterSlidesForAdmin([rowResidenceHero as { src: string; alt: string }], allowed)[0] ?? defaults.residence_hero,
       designedFor: safeDesigned,
       persisted: true,
       builtInDefaults,
