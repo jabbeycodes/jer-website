@@ -45,6 +45,8 @@ export default function AdminGalleryPage() {
   const [pickHero, setPickHero] = useState("");
   const [pickGallery, setPickGallery] = useState("");
 
+  const [pendingDelete, setPendingDelete] = useState<{ list: string; index: number } | null>(null);
+
   const loadAll = useCallback(async () => {
     setError(null);
     const [me, layoutRes, assetsRes] = await Promise.all([
@@ -148,15 +150,16 @@ export default function AdminGalleryPage() {
     setList(copy);
   }
 
-  function removeAt(list: Slide[], setList: (v: Slide[]) => void, index: number, confirmFirst: boolean = true) {
-    // Require confirmation for the first removal attempt
-    // Track which items are in "confirm" state using a ref-based approach
-    // For simplicity, we'll use a window.confirm
-    if (confirmFirst) {
-      const confirmed = window.confirm("Are you sure you want to remove this image?");
-      if (!confirmed) return;
+  function removeAt(list: Slide[], setList: (v: Slide[]) => void, index: number, listName: string) {
+    // Two-tap delete: first tap marks, second tap confirms
+    if (pendingDelete?.list === listName && pendingDelete?.index === index) {
+      setList(list.filter((_, i) => i !== index));
+      setPendingDelete(null);
+      return;
     }
-    setList(list.filter((_, i) => i !== index));
+    setPendingDelete({ list: listName, index });
+    // Auto-clear after 3 seconds
+    setTimeout(() => setPendingDelete((prev) => (prev?.list === listName && prev?.index === index ? null : prev)), 3000);
   }
 
   function applyBuiltInDefaults() {
@@ -319,10 +322,14 @@ export default function AdminGalleryPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => removeAt(hero, setHero, index)}
-                        className="text-xs border border-red-500/40 text-red-400 rounded px-2 py-1"
+                        onClick={() => removeAt(hero, setHero, index, "hero")}
+                        className={`text-xs border rounded px-2 py-1 transition-colors ${
+                          pendingDelete?.list === "hero" && pendingDelete?.index === index
+                            ? "border-red-500 bg-red-500/20 text-red-300"
+                            : "border-red-500/40 text-red-400 hover:bg-red-500/10"
+                        }`}
                       >
-                        Remove
+                        {pendingDelete?.list === "hero" && pendingDelete?.index === index ? "Confirm remove?" : "Remove"}
                       </button>
                     </div>
                   </div>
@@ -394,10 +401,14 @@ export default function AdminGalleryPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => removeAt(galleryPage, setGalleryPage, index)}
-                        className="text-xs border border-red-500/40 text-red-400 rounded px-2 py-1"
+                        onClick={() => removeAt(galleryPage, setGalleryPage, index, "galleryPage")}
+                        className={`text-xs border rounded px-2 py-1 transition-colors ${
+                          pendingDelete?.list === "galleryPage" && pendingDelete?.index === index
+                            ? "border-red-500 bg-red-500/20 text-red-300"
+                            : "border-red-500/40 text-red-400 hover:bg-red-500/10"
+                        }`}
                       >
-                        Remove
+                        {pendingDelete?.list === "galleryPage" && pendingDelete?.index === index ? "Confirm remove?" : "Remove"}
                       </button>
                     </div>
                   </div>
