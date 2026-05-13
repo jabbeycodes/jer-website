@@ -22,11 +22,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/api/admin")) {
-  if (
+    if (
       pathname === "/api/admin/login" ||
       pathname === "/api/admin/logout" ||
       pathname === "/api/admin/me" ||
-      pathname === "/api/admin/gallery-assets"
+      pathname === "/api/admin/gallery-assets" ||
+      pathname === "/api/admin/gallery-layout"
     ) {
       return NextResponse.next();
     }
