@@ -148,7 +148,14 @@ export default function AdminGalleryPage() {
     setList(copy);
   }
 
-  function removeAt(list: Slide[], setList: (v: Slide[]) => void, index: number) {
+  function removeAt(list: Slide[], setList: (v: Slide[]) => void, index: number, confirmFirst: boolean = true) {
+    // Require confirmation for the first removal attempt
+    // Track which items are in "confirm" state using a ref-based approach
+    // For simplicity, we'll use a window.confirm
+    if (confirmFirst) {
+      const confirmed = window.confirm("Are you sure you want to remove this image?");
+      if (!confirmed) return;
+    }
     setList(list.filter((_, i) => i !== index));
   }
 

@@ -35,7 +35,7 @@ export type PublicSiteMedia = {
 
 function formatAltFromFilename(filename: string): string {
   const base = filename.replace(/\.[^.]+$/i, "").replace(/_/g, " ");
-  return `Jirapa Executive Residence — ${base}`;
+  return `Jirapa Executive Residence - ${base}`;
 }
 
 function isSafePublicSrc(src: string): boolean {
@@ -168,7 +168,7 @@ async function fetchLayoutRowFromSupabase(): Promise<SiteMediaLayoutRow | null> 
 }
 
 /**
- * Full public media: homepage hero, /gallery grid, subpage heroes, and “Designed for” cards.
+ * Full public media: homepage hero, /gallery grid, subpage heroes, and "Designed for" cards.
  */
 export async function resolvePublicSiteMedia(): Promise<PublicSiteMedia> {
   const allowed = allowedSrcSet();
@@ -203,7 +203,7 @@ export async function resolvePublicSiteMedia(): Promise<PublicSiteMedia> {
   };
 }
 
-/** @deprecated Use `resolvePublicSiteMedia` — kept for call sites that only need hero + gallery. */
+/** @deprecated Use `resolvePublicSiteMedia` - kept for call sites that only need hero + gallery. */
 export async function resolvePublicGalleryLayout(): Promise<{ hero: GallerySlide[]; galleryPage: GallerySlide[] }> {
   const s = await resolvePublicSiteMedia();
   return { hero: s.hero, galleryPage: s.galleryPage };
@@ -247,32 +247,25 @@ export function validateLayoutForSave(
     return { ok: false, error: "Add at least one hero slide." };
   }
 
+  // Corporate hero: optional (defaults to built-in if empty)
   const rawCorp = normalizeSingleSlide(b.corporateHero);
+  const corporate_hero = rawCorp ? filterToAllowed([rawCorp], allowed) : [];
+
+  // Residence hero: optional (defaults to built-in if empty)
   const rawRes = normalizeSingleSlide(b.residenceHero);
-  if (!rawCorp) return { ok: false, error: "Corporate page hero image is required." };
-  if (!rawRes) return { ok: false, error: "Residence page hero image is required." };
+  const residence_hero = rawRes ? filterToAllowed([rawRes], allowed) : [];
 
-  const corporate_hero = filterToAllowed([rawCorp], allowed);
-  const residence_hero = filterToAllowed([rawRes], allowed);
-  if (corporate_hero.length === 0) return { ok: false, error: "Corporate hero uses an unknown or invalid path." };
-  if (residence_hero.length === 0) return { ok: false, error: "Residence hero uses an unknown or invalid path." };
-
+  // Designed for: optional (0 to 4 cards, not strictly required)
   const rawDesigned = normalizeSlides(b.designedFor);
-  if (rawDesigned.length !== DESIGNED_FOR_CARD_META.length) {
-    return { ok: false, error: `Homepage “Designed for” section must have exactly ${DESIGNED_FOR_CARD_META.length} images.` };
-  }
   const designed_for = filterToAllowed(rawDesigned, allowed);
-  if (designed_for.length !== DESIGNED_FOR_CARD_META.length) {
-    return { ok: false, error: "One or more “Designed for” images use an unknown or invalid path." };
-  }
 
   return {
     ok: true,
     value: {
       hero,
       gallery_page,
-      corporate_hero: corporate_hero[0]!,
-      residence_hero: residence_hero[0]!,
+      corporate_hero: corporate_hero[0] ?? { src: "", alt: "" },
+      residence_hero: residence_hero[0] ?? { src: "", alt: "" },
       designed_for,
     },
   };
