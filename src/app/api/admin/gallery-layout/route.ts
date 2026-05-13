@@ -1,4 +1,5 @@
-import { apiJson, isProduction } from "@/lib/apiResponse";
+import { NextResponse } from "next/server";
+import { isProduction } from "@/lib/apiResponse";
 import {
   getDefaultLayoutForAdminEditor,
   getLayoutRowForAdmin,
@@ -8,6 +9,12 @@ import {
 } from "@/lib/galleryLayout";
 
 export const dynamic = "force-dynamic";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, PUT, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
 
 function filterSlidesForAdmin(
   slides: { src: string; alt: string }[],
@@ -30,32 +37,47 @@ export async function GET() {
   };
 
   if (!row) {
-    return apiJson({
-      hero: defaults.hero,
-      galleryPage: defaults.gallery_page,
-      corporateHero: defaults.corporate_hero,
-      residenceHero: defaults.residence_hero,
-      designedFor: defaults.designed_for,
-      persisted: false,
-      builtInDefaults,
-    });
+    return NextResponse.json(
+      {
+        hero: defaults.hero,
+        galleryPage: defaults.gallery_page,
+        corporateHero: defaults.corporate_hero,
+        residenceHero: defaults.residence_hero,
+        designedFor: defaults.designed_for,
+        persisted: false,
+        builtInDefaults,
+      },
+      { headers: { ...corsHeaders, "Cache-Control": "no-store" } }
+    );
   }
 
+  // Handle null values for columns added via ALTER TABLE
+  const rowDesignedFor = Array.isArray(row.designed_for) ? row.designed_for : [];
+  const rowCorporateHero = row.corporate_hero && typeof row.corporate_hero === "object" ? row.corporate_hero : null;
+  const rowResidenceHero = row.residence_hero && typeof row.residence_hero === "object" ? row.residence_hero : null;
+
   const safeDesigned = defaults.designed_for.map((d, i) => {
-    const slide = row.designed_for[i];
-    if (!slide) return d;
+    const slide = rowDesignedFor[i];
+    if (!slide || typeof slide !== "object") return d;
     return allowed.has(slide.src) && !slide.src.includes("..") ? slide : d;
   });
 
-  return apiJson({
-    hero: filterSlidesForAdmin(row.hero, allowed),
-    galleryPage: filterSlidesForAdmin(row.gallery_page, allowed),
-    corporateHero: filterSlidesForAdmin([row.corporate_hero], allowed)[0] ?? defaults.corporate_hero,
-    residenceHero: filterSlidesForAdmin([row.residence_hero], allowed)[0] ?? defaults.residence_hero,
-    designedFor: safeDesigned,
-    persisted: true,
-    builtInDefaults,
-  });
+  return NextResponse.json(
+    {
+      hero: filterSlidesForAdmin(row.hero, allowed),
+      galleryPage: filterSlidesForAdmin(row.gallery_page, allowed),
+      corporateHero: rowCorporateHero
+        ? (filterSlidesForAdmin([rowCorporateHero as { src: string; alt: string }], allowed)[0] ?? defaults.corporate_hero)
+        : defaults.corporate_hero,
+      residenceHero: rowResidenceHero
+        ? (filterSlidesForAdmin([rowResidenceHero as { src: string; alt: string }], allowed)[0] ?? defaults.residence_hero)
+        : defaults.residence_hero,
+      designedFor: safeDesigned,
+      persisted: true,
+      builtInDefaults,
+    },
+    { headers: { ...corsHeaders, "Cache-Control": "no-store" } }
+  );
 }
 
 export async function PUT(req: Request) {
@@ -64,21 +86,21 @@ export async function PUT(req: Request) {
   try {
     body = await req.json();
   } catch {
-    return apiJson({ error: "Invalid JSON." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON." }, { status: 400, headers: corsHeaders });
   }
 
   const parsed = validateLayoutForSave(body, allowed);
   if (!parsed.ok) {
-    return apiJson({ error: parsed.error }, { status: 400 });
+    return NextResponse.json({ error: parsed.error }, { status: 400, headers: corsHeaders });
   }
 
   const result = await upsertGalleryLayoutToSupabase(parsed.value);
   if (!result.ok) {
-    return apiJson(
+    return NextResponse.json(
       { error: isProduction ? "Unable to save layout." : result.message },
-      { status: result.status }
+      { status: result.status, headers: corsHeaders }
     );
   }
 
-  return apiJson({ ok: true });
+  return NextResponse.json({ ok: true }, { headers: corsHeaders });
 }
