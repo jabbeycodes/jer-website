@@ -1,5 +1,14 @@
+import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+export const metadata: Metadata = {
+  title: "Location",
+  description: "Jirapa Executive Residence is located in Jirapa, Upper West Region, Ghana — accessible, secure, and strategically positioned for institutional and private stays.",
+  openGraph: {
+    images: [{ url: "/og-image.png" }],
+  },
+};
 
 export default function LocationPage() {
   return (

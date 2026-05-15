@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "@/components/AnimatedSection";
@@ -5,6 +6,14 @@ import Link from "next/link";
 import { resolvePublicSiteMedia } from "@/lib/galleryLayout";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Residence & Rates",
+  description: "Private executive residence rates and accommodation tiers at Jirapa Executive Residence. Secure rooms with Starlink internet, electric fencing, and 24/7 surveillance in Upper West Ghana.",
+  openGraph: {
+    images: [{ url: "/og-image.png" }],
+  },
+};
 
 const tiers = [
   { guests: "1–2", rate: "$250 – $280", minGuests: 1, maxGuests: 2, rateLabel: "250" },

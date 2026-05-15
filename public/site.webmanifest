@@ -1,0 +1,16 @@
+{
+  "name": "Jirapa Executive Residence",
+  "short_name": "JER",
+  "description": "Secure. Connected. Private. — A private executive residence in Jirapa, Upper West Ghana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#C9A96E",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

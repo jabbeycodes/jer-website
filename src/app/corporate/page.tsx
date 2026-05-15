@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedSection, { StaggerContainer, StaggerItem, AnimatedCard } from "@/components/AnimatedSection";
@@ -5,6 +6,14 @@ import Link from "next/link";
 import { resolvePublicSiteMedia } from "@/lib/galleryLayout";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Corporate Stays",
+  description: "Corporate residence packages at Jirapa Executive Residence — secure compound housing, Starlink connectivity, and private accommodation for institutional teams in Upper West Ghana.",
+  openGraph: {
+    images: [{ url: "/og-image.png" }],
+  },
+};
 
 export default async function CorporatePage() {
   const { corporateHero } = await resolvePublicSiteMedia();

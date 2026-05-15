@@ -1,8 +1,17 @@
+import { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { resolvePublicGalleryLayout } from "@/lib/galleryLayout";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Gallery",
+  description: "Explore the Jirapa Executive Residence — photo gallery of the mansion, rooms, grounds, and facilities.",
+  openGraph: {
+    images: [{ url: "/og-image.png" }],
+  },
+};
 
 export default async function GalleryPage() {
   const { galleryPage: images } = await resolvePublicGalleryLayout();
