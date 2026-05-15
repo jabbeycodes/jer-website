@@ -14,7 +14,6 @@ const ROTATE_MS = 6000;
 export default function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [remoteShots, setRemoteShots] = useState<HeroSlide[] | null>(null);
-  const [showVideo, setShowVideo] = useState(false);
 
   const slides = useMemo(() => {
     if (remoteShots && remoteShots.length > 0) return remoteShots;
@@ -69,33 +68,6 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/50" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
 
-      {/* Video Modal */}
-      {showVideo && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-          onClick={() => setShowVideo(false)}
-        >
-          <div
-            className="relative w-full max-w-5xl mx-4 aspect-video bg-black rounded-xl overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowVideo(false)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
-            >
-              ✕
-            </button>
-            <video
-              src="/videos/jirapa-tour.mp4"
-              controls
-              autoPlay
-              className="w-full h-full"
-              playsInline
-            />
-          </div>
-        </div>
-      )}
-
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 pt-20">
         <p className="text-[#C9A96E] text-sm md:text-base tracking-[0.3em] uppercase mb-6 font-medium">
           Jirapa Executive Residence
@@ -125,8 +97,8 @@ export default function Hero() {
           <Link href="/contact" className="btn-gold text-base">
             Request Availability
           </Link>
-          <button
-            onClick={() => setShowVideo(true)}
+          <a
+            href="#experience"
             className="btn-outline text-base inline-flex items-center gap-2"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -134,7 +106,7 @@ export default function Hero() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             Watch Video
-          </button>
+          </a>
         </div>
 
         {/* Feature icons bar */}
